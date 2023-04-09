@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "total": {
+      "commandName": "Project",
+      "commandLineArgs": "helloworld.ttlbc"
+    }
+  }
+}
