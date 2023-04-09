@@ -2,7 +2,7 @@
 {
 	public class ToTaLRunner
 	{
-		public static void exec(ref ToTaLIOStream stream)
+		public static void exec(ref ToTaLIOStream stream, bool bufferToStdout = false)
 		{
 			int increment = 1;
 			for (int i = 0; i < stream.src.Count; i += increment)
@@ -69,7 +69,8 @@
 						increment = 4;
 						break;
 					case 0x31: // swt
-						stream.bufferSet(stream.src[i + 1]);
+						if (!bufferToStdout) stream.bufferSet(stream.src[i + 1]);
+						else Console.Write((char)stream.src[i + 1]);
 						increment = 2;
 						break;
 					case 0x32: // srm
@@ -86,8 +87,12 @@
 						byte bufferbyte;
 						while (i + inx < stream.src.Count && (bufferbyte = stream.src[i + inx]) != 0x00)
 						{
-							stream.bufferSet(bufferbyte);
-							stream.cursor++;
+							if (!bufferToStdout)
+							{
+								stream.bufferSet(bufferbyte);
+								stream.cursor++;
+							}
+							else Console.Write((char)bufferbyte);
 							inx++;
 						}
 						increment = ++inx; // inx is gonna get discarded anyway, all hail code simplifaction!

@@ -9,24 +9,28 @@
 				Console.WriteLine("No file specified to execute!");
 				return;
 			}
+			bool bufferToStdout = args.Contains("-bs") || args.Contains("--bufferToStdout");
 			ToTaLIOStream stream = new()
 			{
 				src = File.ReadAllBytes(args[0]).ToList()
 			};
-			ToTaLRunner.exec(ref stream);
+			ToTaLRunner.exec(ref stream, bufferToStdout);
 
-			Console.Write("Display stdio buffer (Y/N)?");
-			var displayBuffer = Console.ReadKey();
-			Console.WriteLine();
-
-			if (displayBuffer.Key == ConsoleKey.Y)
+			if (!bufferToStdout)
 			{
-				stream.cursor = 0;
-				byte bufferByte;
-				while ((bufferByte = stream.bufferGet()) != 0x00 && stream.cursor < stream.buffer.Count)
+				Console.Write("Display stdio buffer (Y/N)?");
+				var displayBuffer = Console.ReadKey();
+				Console.WriteLine();
+
+				if (displayBuffer.Key == ConsoleKey.Y)
 				{
-					Console.Write((char)bufferByte);
-					stream.cursor++;
+					stream.cursor = 0;
+					byte bufferByte;
+					while ((bufferByte = stream.bufferGet()) != 0x00 && stream.cursor < stream.buffer.Count)
+					{
+						Console.Write((char)bufferByte);
+						stream.cursor++;
+					}
 				}
 			}
 		}
