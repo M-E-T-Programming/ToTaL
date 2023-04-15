@@ -2,7 +2,7 @@
   "profiles": {
     "total": {
       "commandName": "Project",
-      "commandLineArgs": "helloworld.ttlbc -bs"
+      "commandLineArgs": "helloworld.ttla -ao"
     }
   }
 }
